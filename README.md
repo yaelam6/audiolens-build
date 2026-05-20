@@ -4,6 +4,8 @@
 
 🌐 **Live website:** [audiolens.netlify.app](https://audiolens.netlify.app)
 
+![AudioLens screenshot](screenshot.png)
+
 ---
 
 ## What It Does
