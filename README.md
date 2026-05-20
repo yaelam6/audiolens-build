@@ -79,15 +79,14 @@ python audioLens.py
 ## Project Structure
 
 ```
-v1/
-  audioLens.py           # Main application — all logic and UI
-  AudioLens.spec         # PyInstaller build spec for macOS
-  AudioLens-Windows.spec # PyInstaller build spec for Windows
-  AudioLens.icns         # macOS app icon
-  create_icon_win.py     # Icon generation utility for Windows build
-requirements.txt         # Python dependencies
-index.html               # Project landing page (deployed to Netlify)
-.github/workflows/       # GitHub Actions CI workflow (Windows build)
+audioLens.py           # Main application — all logic and UI
+AudioLens.spec         # PyInstaller build spec for macOS
+AudioLens-Windows.spec # PyInstaller build spec for Windows
+AudioLens.icns         # macOS app icon
+create_icon_win.py     # Icon generation utility for Windows build
+requirements.txt       # Python dependencies
+index.html             # Project landing page (deployed to Netlify)
+.github/workflows/     # GitHub Actions CI workflow (Windows build)
 ```
 
 ---

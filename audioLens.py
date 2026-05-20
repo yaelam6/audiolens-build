@@ -19,11 +19,20 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # =========================================================
-# CREDENTIALS
+# CREDENTIALS — loaded from ~/.audiolens_creds.json or env vars
 # =========================================================
-SPOTIFY_CLIENT_ID = "c9a1fe2098204c7ab54cf9556c2bd470"
-SPOTIFY_CLIENT_SECRET = "ef02ec0f4cbc4ca79b00c0bc4bcc6f34"
-GETSONGBPM_API_KEY = "3bac91f58179afac580ffde9f7150fe7".strip()
+def _load_creds():
+    import json, pathlib
+    path = pathlib.Path.home() / ".audiolens_creds.json"
+    if path.exists():
+        try:
+            d = json.loads(path.read_text())
+            return d.get("SPOTIFY_CLIENT_ID", ""), d.get("SPOTIFY_CLIENT_SECRET", ""), d.get("GETSONGBPM_API_KEY", "")
+        except Exception:
+            pass
+    return os.environ.get("SPOTIFY_CLIENT_ID", ""), os.environ.get("SPOTIFY_CLIENT_SECRET", ""), os.environ.get("GETSONGBPM_API_KEY", "")
+
+SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, GETSONGBPM_API_KEY = _load_creds()
 
 KEY_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 NOTE_NAMES = KEY_NAMES[:]
