@@ -1,7 +1,42 @@
+# Build outputs
 dist/
 build/
+*.spec.bak
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.egg-info/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# macOS
 .DS_Store
+
+# Large test / sample audio files
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.aif
+*.aiff
+
+# Local Spotify credentials — never commit secrets
+# Store credentials in ~/.audiolens_spotify.json (outside this repo)
+*.audiolens_spotify.json
+.env
+.env.local
+
+# Claude Code internal session data
+.claude/
+
+# Local build artifacts (Hebrew-named folder)
+קובץ הורדה לווינדוס/
+
+# Logs
+*.log
