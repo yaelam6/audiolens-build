@@ -1,6 +1,6 @@
 """Creates AudioLens v2 icons with v2 badge — for both Mac (.icns) and Windows (.ico)."""
 from PIL import Image, ImageDraw, ImageFont
-import os, subprocess, tempfile
+import os, subprocess, sys, tempfile
 
 def make_icon(size):
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
@@ -72,25 +72,22 @@ images[0].save(
 )
 print("AudioLens.ico created")
 
-# ── macOS .icns ───────────────────────────────────────────────────────────────
-icns_sizes = [16, 32, 64, 128, 256, 512, 1024]
-iconset_dir = tempfile.mkdtemp(suffix=".iconset")
-
-size_map = {
-    16:   ("icon_16x16.png",     "icon_16x16@2x.png",   32),
-    32:   ("icon_32x32.png",     "icon_32x32@2x.png",   64),
-    128:  ("icon_128x128.png",   "icon_128x128@2x.png", 256),
-    256:  ("icon_256x256.png",   "icon_256x256@2x.png", 512),
-    512:  ("icon_512x512.png",   "icon_512x512@2x.png", 1024),
-}
-
-for base, (name1, name2, double) in size_map.items():
-    make_icon(base).save(os.path.join(iconset_dir, name1))
-    make_icon(double).save(os.path.join(iconset_dir, name2))
-
-out_icns = os.path.join(os.path.dirname(os.path.abspath(__file__)), "AudioLens.icns")
-result = subprocess.run(["iconutil", "-c", "icns", iconset_dir, "-o", out_icns], capture_output=True)
-if result.returncode == 0:
-    print(f"AudioLens.icns created → {out_icns}")
-else:
-    print("iconutil failed:", result.stderr.decode())
+# .icns is macOS-only — skip on Windows
+if sys.platform == "darwin":
+    iconset_dir = tempfile.mkdtemp(suffix=".iconset")
+    size_map = {
+        16:   ("icon_16x16.png",     "icon_16x16@2x.png",   32),
+        32:   ("icon_32x32.png",     "icon_32x32@2x.png",   64),
+        128:  ("icon_128x128.png",   "icon_128x128@2x.png", 256),
+        256:  ("icon_256x256.png",   "icon_256x256@2x.png", 512),
+        512:  ("icon_512x512.png",   "icon_512x512@2x.png", 1024),
+    }
+    for base, (name1, name2, double) in size_map.items():
+        make_icon(base).save(os.path.join(iconset_dir, name1))
+        make_icon(double).save(os.path.join(iconset_dir, name2))
+    out_icns = os.path.join(os.path.dirname(os.path.abspath(__file__)), "AudioLens.icns")
+    result = subprocess.run(["iconutil", "-c", "icns", iconset_dir, "-o", out_icns], capture_output=True)
+    if result.returncode == 0:
+        print(f"AudioLens.icns created → {out_icns}")
+    else:
+        print("iconutil failed:", result.stderr.decode())
