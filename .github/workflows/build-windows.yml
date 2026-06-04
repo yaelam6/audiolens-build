@@ -1,4 +1,4 @@
-name: Build AudioLens for Windows
+name: Build AudioLens v2 for Windows
 
 on:
   workflow_dispatch:
@@ -17,21 +17,21 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests numpy soundfile customtkinter scipy pyinstaller pillow
+        run: pip install requests numpy soundfile customtkinter scipy pyinstaller pillow librosa
 
       - name: Create Windows icon
         run: python create_icon_win.py
 
       - name: Build with PyInstaller
-        run: python -m PyInstaller AudioLens-Windows.spec
+        run: python -m PyInstaller AudioLens-Windows-v2.spec
 
       - name: Package as zip
         shell: pwsh
-        run: Compress-Archive -Path dist\AudioLens -DestinationPath AudioLens-Windows.zip
+        run: Compress-Archive -Path dist\AudioLens -DestinationPath AudioLens-Windows-v2.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AudioLens-Windows
-          path: AudioLens-Windows.zip
+          name: AudioLens-Windows-v2
+          path: AudioLens-Windows-v2.zip
           retention-days: 60

@@ -6,25 +6,42 @@
 
 ![AudioLens screenshot](screenshot.png)
 
+> ⚠️ **This is v2.0 — an experimental release.** BPM and key detection may be inaccurate on some tracks. Mix Matches results are algorithmic and not always harmonically perfect. Expect bugs. Feedback is very welcome.
+
+---
+
+## What's New in v2.0
+
+| Feature | Description |
+|---|---|
+| 🎛️ **Mix Matches** | Find harmonically compatible songs by BPM tolerance and Camelot key. Select any match and search again — drill down endlessly. |
+| 🎡 **Camelot Wheel** | Full harmonic mixing wheel. Every detected key shows its Camelot position (e.g. 8B, 4A) for seamless DJ transitions. |
+| 🎵 **Better Key Detection** | Uses Librosa's CQT-based `chroma_cens` when available — far more accurate than v1's STFT-only chromagram. |
+| 🥁 **Improved BPM Detection** | Combined autocorrelation + FFT analysis with multi-band envelope. Handles half-tempo and double-tempo artifacts. |
+| ▶️ **Preview Playback** | Play 30-second previews directly from search results. Click again to stop. |
+| 🎸 **Genre-Aware Search** | Auto-detects Goa, Psytrance, Techno, House, D&B, Hip-Hop and more. Mix Matches searches within your genre automatically. |
+| 🎵 **iTunes-only Search** | No credentials required — search works out of the box. |
+
 ---
 
 ## What It Does
 
-AudioLens analyzes songs and audio files to detect **BPM (tempo)** and **musical key**, then displays the result on a **Circle of Fifths** — the standard reference DJs and musicians use for harmonic relationships.
+AudioLens analyzes songs and audio files to detect **BPM (tempo)** and **musical key**, then displays the result on an interactive **Circle of Fifths** with Camelot labels. The **Mix Matches** panel finds harmonically compatible songs you can mix into your current track.
 
-Search for any song by name or artist, or upload a local audio file, and get instant BPM and key data displayed on a live interactive canvas.
+Search for any song by name or artist, or upload a local audio file. Once a song is analyzed, click **Find Matches** to discover compatible tracks — then select any match to make it the new reference and search again.
 
 ---
 
 ## Key Features
 
-- 🔍 **Song Search** — Spotify-powered search with relevance scoring; returns name, artist, and album
-- 🎵 **BPM Detection** — Cascade lookup: Spotify audio-features → GetSongBPM API → Beatport API → local DSP analysis on 30-second preview
-- 🎹 **Key Detection** — Chromagram-based analysis using Krumhansl–Schmuckler and Temperley profiles
-- 🎡 **Circle of Fifths** — Live interactive canvas highlighting the detected key and mode (Major/Minor)
-- 📁 **File Upload** — Analyze any local WAV, MP3, FLAC, OGG, or AIF file directly with the same DSP pipeline
-- 🎧 **Preview Playback** — Play 30-second iTunes previews directly inside the app (▶ button on each result)
-- 🌗 **Dark UI** — Custom dark-mode interface with animated loading states
+- 🔍 **Song Search** — iTunes-powered search (dual parallel requests for better results); no API credentials required
+- 🎵 **BPM Detection** — Multi-band autocorrelation + FFT on onset envelopes; handles short previews and double/half-tempo artifacts
+- 🎹 **Key Detection** — CQT-based chroma (`chroma_cens` via Librosa when available); falls back to STFT chromagram with Krumhansl–Schmuckler + Temperley + Shaath blended profiles
+- 🎡 **Circle of Fifths + Camelot** — Live canvas highlighting detected key with Camelot position label
+- 🎛️ **Mix Matches** — BPM ± tolerance slider, key compatibility selector (same key / ±1 / ±2 steps), genre-aware artist pool
+- 📁 **File Upload** — Analyze any local WAV, MP3, FLAC, OGG, or AIF file
+- ▶️ **Preview Playback** — 30-second iTunes previews with stop/start toggle
+- 🌗 **Dark UI** — Splash screen, animated loading states, responsive layout
 
 ---
 
@@ -34,45 +51,21 @@ Search for any song by name or artist, or upload a local audio file, and get ins
 |---|---|
 | Language | Python 3.11 |
 | GUI | CustomTkinter, Tkinter Canvas |
-| Audio DSP | NumPy, SciPy, SoundFile |
-| Networking | requests, threading |
+| Audio DSP | NumPy, SciPy, SoundFile, Librosa |
+| Networking | requests, concurrent.futures |
 | Build | PyInstaller (Mac + Windows), GitHub Actions |
 | Website | HTML, CSS, JavaScript — deployed on Netlify |
 
 ---
 
-## APIs Used
-
-| API | Purpose |
-|---|---|
-| [Spotify Web API](https://developer.spotify.com/documentation/web-api) | Song search and audio features (BPM, key) |
-| [GetSongBPM API](https://getsongbpm.com/api) | BPM and key fallback lookup |
-| [Beatport API](https://api.beatport.com) | BPM and key fallback lookup |
-| [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html) | 30-second song previews |
-
-The Spotify integration uses the Client Credentials flow (no user login required). iTunes previews are used for playback and DSP fallback — no authentication required.
-
-> **Note:** Spotify restricted several endpoints (`/audio-features`) for new developer apps in late 2024. When Spotify returns no data, the app automatically falls back to GetSongBPM → Beatport → local DSP preview analysis.
-
----
-
-## Installation
+## Running from Source
 
 **Requirements:** Python 3.9+
 
 ```bash
-git clone https://github.com/yaelam6/bpm-key-finder.git
-cd bpm-key-finder
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+git clone https://github.com/yaelam6/audiolens-build.git
+cd audiolens-build
 pip install -r requirements.txt
-```
-
----
-
-## Running the App
-
-```bash
 python audioLens.py
 ```
 
@@ -81,36 +74,29 @@ python audioLens.py
 ## Project Structure
 
 ```
-audioLens.py           # Main application — all logic and UI
-AudioLens.spec         # PyInstaller build spec for macOS
-AudioLens-Windows.spec # PyInstaller build spec for Windows
-AudioLens.icns         # macOS app icon
-create_icon_win.py     # Icon generation utility for Windows build
-requirements.txt       # Python dependencies
-index.html             # Project landing page (deployed to Netlify)
-.github/workflows/     # GitHub Actions CI workflow (Windows build)
+audioLens.py              # Main application — all logic and UI (v2.0)
+AudioLens.spec            # PyInstaller build spec for macOS
+AudioLens-Windows.spec    # PyInstaller build spec for Windows
+AudioLens.icns            # macOS app icon
+create_icon_win.py        # Icon generation utility for Windows build
+requirements.txt          # Python dependencies
+index.html                # Project landing page (deployed to Netlify)
+.github/workflows/        # GitHub Actions CI workflow (Windows build)
 ```
 
 ---
 
-## Known Limitations
+## Known Limitations & Bugs (v2.0)
 
-- **Spotify audio-features restriction** — Spotify restricted the `/audio-features` endpoint for new apps in late 2024. The app falls back through GetSongBPM → Beatport → local DSP automatically, but results may vary.
-- **BPM accuracy on short previews** — Local DSP runs on 30-second previews. BPM detection on short clips can return half or double the true tempo.
-- **Key detection accuracy** — Chromagram-based key detection is a well-known hard problem. Results are reliable for most pop and electronic music but may be off for complex harmonic content.
-- **No internet, no search** — Song search and preview playback both require a network connection.
-- **macOS SSL warnings** — The app suppresses `InsecureRequestWarning` from `urllib3`; this is a known issue with the system Python SSL bundle on some macOS versions.
+> This is an experimental release. The following are known issues:
 
----
-
-## Skills Demonstrated
-
-- **Audio DSP** — BPM detection from scratch using autocorrelation and FFT on filtered onset envelopes; key detection using chromagram correlation against music-theory profiles
-- **Desktop GUI development** — Complete dark-mode UI with CustomTkinter including animated loading states and a Canvas-drawn Circle of Fifths
-- **API integration** — Spotify Web API (OAuth Client Credentials), GetSongBPM, Beatport, iTunes Search API
-- **Multithreading** — Background analysis with `threading.Thread`, staggered UI updates, per-request cancellation tokens to prevent stale callbacks
-- **Error handling & fallbacks** — Graceful degradation across four data sources (Spotify → GetSongBPM → Beatport → preview DSP)
-- **Build & deployment** — PyInstaller cross-platform packaging, GitHub Actions CI for Windows builds, Netlify static site deployment
+- **BPM accuracy on short previews** — DSP runs on 30-second clips. Half/double-tempo errors are common on certain genres.
+- **Key detection inaccuracies** — Chromagram-based key detection is a hard problem. Results are reliable for most electronic music but may be wrong on complex harmonic content.
+- **Mix Matches false positives** — Matches are filtered by BPM + Camelot but not all will actually mix well. Treat results as suggestions.
+- **Genre misclassification** — Genre detection is heuristic (BPM + iTunes genre tag + artist name). Edge cases exist.
+- **No internet, no search** — Song search and preview analysis both require a network connection.
+- **macOS SSL warnings** — `InsecureRequestWarning` is suppressed; known issue with system Python SSL on some macOS versions.
+- **Spotify audio-features** — Spotify restricted `/audio-features` for new apps (late 2024). The Spotify mix-search path is currently unused; iTunes is the primary backend.
 
 ---
 

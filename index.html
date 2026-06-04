@@ -30,6 +30,131 @@
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    /* ── POPUP OVERLAY ── */
+    .popup-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      animation: fadeIn .3s ease;
+    }
+    .popup-overlay.hidden { display: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .popup {
+      background: var(--panel);
+      border: 1px solid #7c5cfc44;
+      border-radius: 24px;
+      padding: 2.5rem 2.75rem;
+      max-width: 520px; width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 80px #7c5cfc33, 0 4px 24px rgba(0,0,0,.6);
+      animation: slideUp .35s cubic-bezier(.22,.68,0,1.2);
+      position: relative;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px) scale(0.96); opacity: 0; }
+      to   { transform: translateY(0)    scale(1);    opacity: 1; }
+    }
+
+    .popup-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #7c5cfc, #26c6a0);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 1.25rem;
+    }
+
+    .popup-icon {
+      font-size: 4.5rem;
+      color: var(--accent);
+      filter: drop-shadow(0 0 32px #7c5cfc88);
+      display: block;
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+
+    .popup h2 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .popup h2 span { color: var(--accent); }
+
+    .popup-sub {
+      color: var(--txt2);
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+      line-height: 1.65;
+    }
+
+    .popup-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    .popup-feature {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--card);
+      border: 1px solid #ffffff08;
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      font-size: 0.9rem;
+      color: var(--txt2);
+    }
+    .popup-feature .emoji { font-size: 1.1rem; flex-shrink: 0; }
+    .popup-feature strong { color: var(--txt); }
+
+    .popup-btns {
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: transform .15s, box-shadow .15s;
+      text-decoration: none; width: 100%;
+    }
+    .btn:hover { transform: translateY(-2px); text-decoration: none; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 24px #7c5cfc44;
+    }
+    .btn-primary:hover { box-shadow: 0 6px 32px #7c5cfc66; }
+    .btn-secondary {
+      background: var(--btn-bg);
+      color: var(--txt);
+      border: 1px solid #ffffff14;
+    }
+    .btn-secondary:hover { background: #2e334f; }
+    .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .popup-close {
+      position: absolute; top: 1rem; right: 1.25rem;
+      background: none; border: none;
+      color: var(--txt3); font-size: 1.3rem;
+      cursor: pointer; line-height: 1;
+      transition: color .15s;
+    }
+    .popup-close:hover { color: var(--txt); }
+
     /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
@@ -42,6 +167,15 @@
     .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 700; }
     .nav-logo .symbol { color: var(--accent); font-size: 1.5rem; }
     .nav-logo .lens { color: var(--accent); }
+    .nav-version {
+      background: var(--btn-bg);
+      color: var(--accent2);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 4px;
+    }
     nav ul { list-style: none; display: flex; gap: 2rem; }
     nav ul a { color: var(--txt2); font-size: 0.9rem; }
     nav ul a:hover { color: var(--txt); text-decoration: none; }
@@ -78,29 +212,6 @@
       border-radius: 20px;
       margin-bottom: 0;
     }
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 14px 28px;
-      border-radius: 50px;
-      font-size: 1rem; font-weight: 600;
-      cursor: pointer; border: none;
-      transition: transform .15s, box-shadow .15s;
-      text-decoration: none;
-    }
-    .btn:hover { transform: translateY(-2px); text-decoration: none; }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 24px #7c5cfc44;
-    }
-    .btn-primary:hover { box-shadow: 0 6px 32px #7c5cfc66; }
-    .btn-secondary {
-      background: var(--btn-bg);
-      color: var(--txt);
-      border: 1px solid #ffffff14;
-    }
-    .btn-secondary:hover { background: #2e334f; }
-    .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
 
     /* ── SECTIONS ── */
     .section { padding: 48px 2rem; max-width: 1100px; margin: 0 auto; }
@@ -132,6 +243,42 @@
     .feature-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
     .feature-card p { color: var(--txt2); font-size: 0.9rem; }
 
+    /* ── WHAT'S NEW ── */
+    .whats-new-section {
+      border-top: 1px solid #ffffff08;
+      border-bottom: 1px solid #ffffff08;
+    }
+    .changelog {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .changelog-item {
+      background: var(--card);
+      border: 1px solid #ffffff08;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex; gap: 0.75rem; align-items: flex-start;
+    }
+    .changelog-item .icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .changelog-item h4 { font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--txt); }
+    .changelog-item p { font-size: 0.85rem; color: var(--txt2); }
+
+    /* ── BETA BANNER ── */
+    .beta-banner {
+      background: #2a1f00;
+      border: 1px solid #f59e0b44;
+      border-radius: 14px;
+      padding: 1.25rem 1.75rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      max-width: 700px; margin: 0 auto;
+    }
+    .beta-banner .icon { font-size: 1.5rem; flex-shrink: 0; }
+    .beta-banner h4 { color: #f59e0b; margin-bottom: 0.3rem; }
+    .beta-banner p { color: #c9a227; font-size: 0.9rem; }
+
     /* ── DOWNLOAD ── */
     .download-section {
       background: var(--panel);
@@ -152,38 +299,6 @@
     .download-card h3 { font-size: 1.2rem; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 8px; }
     .download-card p { color: var(--txt2); font-size: 0.9rem; margin-bottom: 1.5rem; }
     .download-card .btn { width: 100%; justify-content: center; }
-
-    /* ── INSTRUCTIONS ── */
-    .steps { display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto; }
-    .step {
-      display: flex; gap: 1rem; align-items: flex-start;
-      background: var(--card);
-      border: 1px solid #ffffff08;
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
-    }
-    .step-num {
-      width: 32px; height: 32px; flex-shrink: 0;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem;
-    }
-    .step-body h4 { margin-bottom: 0.2rem; }
-    .step-body p { color: var(--txt2); font-size: 0.9rem; }
-
-    /* ── BETA BANNER ── */
-    .beta-banner {
-      background: #2a1f00;
-      border: 1px solid #f59e0b44;
-      border-radius: 14px;
-      padding: 1.25rem 1.75rem;
-      display: flex; gap: 1rem; align-items: flex-start;
-      max-width: 700px; margin: 0 auto;
-    }
-    .beta-banner .icon { font-size: 1.5rem; flex-shrink: 0; }
-    .beta-banner h4 { color: #f59e0b; margin-bottom: 0.3rem; }
-    .beta-banner p { color: #c9a227; font-size: 0.9rem; }
 
     /* ── CONTACT ── */
     .contact-box {
@@ -224,16 +339,56 @@
     @media (max-width: 600px) {
       nav ul { display: none; }
       .hero { padding: 36px 1.25rem 32px; }
+      .popup { padding: 2rem 1.5rem; }
     }
   </style>
 </head>
 <body>
+
+<!-- V2 POPUP -->
+<div class="popup-overlay" id="popup">
+  <div class="popup">
+    <button class="popup-close" onclick="closePopup()" aria-label="Close">✕</button>
+    <div class="popup-badge">✨ New Release</div>
+    <span class="popup-icon">⊙</span>
+    <h2>Audio<span>Lens</span> v2.0</h2>
+    <p class="popup-sub">A major update with smarter analysis, harmonic mixing tools, and a redesigned interface.</p>
+
+    <div class="popup-features">
+      <div class="popup-feature">
+        <span class="emoji">🎡</span>
+        <span><strong>Camelot Wheel</strong> — harmonic mixing compatibility at a glance</span>
+      </div>
+      <div class="popup-feature">
+        <span class="emoji">🎛️</span>
+        <span><strong>Mix Matches</strong> — finds songs in the same BPM range and key</span>
+      </div>
+      <div class="popup-feature">
+        <span class="emoji">📁</span>
+        <span><strong>File upload</strong> now in the main search panel — easier workflow</span>
+      </div>
+      <div class="popup-feature">
+        <span class="emoji">🔍</span>
+        <span><strong>iTunes search</strong> — faster, no credentials required</span>
+      </div>
+    </div>
+
+    <div class="popup-btns">
+      <a href="#download" class="btn btn-primary" onclick="closePopup()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 12-4-4m4 4 4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21H19.44a2 2 0 0 0 1.94-1.515L22 17"/></svg>
+        Download v2.0
+      </a>
+      <button class="btn btn-secondary" onclick="closePopup()">Maybe later</button>
+    </div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
     <span class="symbol">⊙</span>
     <span>Audio<span class="lens">Lens</span></span>
+    <span class="nav-version">v2.0</span>
   </div>
   <ul>
     <li><a href="#download">Download</a></li>
@@ -245,7 +400,41 @@
 <section class="hero">
   <span class="hero-icon">⊙</span>
   <h1>Audio<span>Lens</span></h1>
-  <div class="badge">v 1.0 — Free &amp; Open Source</div>
+  <div class="badge">v 2.0 — Free &amp; Open Source · Experimental</div>
+</section>
+
+<!-- WHAT'S NEW -->
+<section class="whats-new-section">
+  <div class="section">
+    <h2 class="section-title">What's New in v2.0</h2>
+    <p class="section-sub">Major upgrade — new features, better accuracy, smarter search.</p>
+    <div class="changelog">
+      <div class="changelog-item">
+        <div class="icon">🎛️</div>
+        <div><h4>Mix Matches</h4><p>Find harmonically compatible songs by BPM and Camelot key. Select any match and search again — drill down endlessly.</p></div>
+      </div>
+      <div class="changelog-item">
+        <div class="icon">🎡</div>
+        <div><h4>Camelot Wheel</h4><p>Full harmonic mixing wheel. Every detected key shows its Camelot position for seamless DJ transitions.</p></div>
+      </div>
+      <div class="changelog-item">
+        <div class="icon">🎵</div>
+        <div><h4>Better Key Detection</h4><p>Uses Librosa's CQT-based chroma analysis — significantly more accurate than v1's STFT-only approach.</p></div>
+      </div>
+      <div class="changelog-item">
+        <div class="icon">🥁</div>
+        <div><h4>Improved BPM Detection</h4><p>Combined autocorrelation + FFT analysis with multi-band envelope. More reliable on short previews.</p></div>
+      </div>
+      <div class="changelog-item">
+        <div class="icon">▶️</div>
+        <div><h4>Preview Playback</h4><p>Play 30-second previews directly from search results. Click again to stop.</p></div>
+      </div>
+      <div class="changelog-item">
+        <div class="icon">🎸</div>
+        <div><h4>Genre-Aware Search</h4><p>Detects Goa, Psytrance, Techno, House, D&amp;B and more. Mix Matches searches within your genre automatically.</p></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- DOWNLOAD -->
@@ -261,7 +450,7 @@
           macOS
         </h3>
         <p>macOS 11 Big Sur and later. Apple Silicon &amp; Intel supported.</p>
-        <a href="https://github.com/yaelam6/bpm-key-finder/releases/download/v1.0/AudioLens-Mac.zip" class="btn btn-primary" download>
+        <a href="https://github.com/yaelam6/audiolens-build/releases/download/v2.0/AudioLens-Mac-v2.zip" class="btn btn-primary" download>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 12-4-4m4 4 4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21H19.44a2 2 0 0 0 1.94-1.515L22 17"/></svg>
           Download for Mac
         </a>
@@ -273,11 +462,10 @@
           Windows
         </h3>
         <p>Windows 10 and later. 64-bit required.</p>
-        <a href="https://github.com/yaelam6/bpm-key-finder/releases/download/v1.0/AudioLens-Windows.zip" class="btn btn-primary" download>
+        <a href="https://github.com/yaelam6/audiolens-build/releases/download/v2.0/AudioLens-Windows-v2.zip" class="btn btn-primary" download>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 12-4-4m4 4 4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21H19.44a2 2 0 0 0 1.94-1.515L22 17"/></svg>
           Download for Windows
         </a>
-
       </div>
 
     </div>
@@ -285,8 +473,8 @@
     <div class="beta-banner" style="margin-top: 2rem;">
       <div class="icon">⚠️</div>
       <div>
-        <h4>This is version 1.0 — a first release</h4>
-        <p>AudioLens is brand new and may contain bugs. If something doesn't work as expected, please reach out — your feedback helps make the app better for everyone.</p>
+        <h4>v2.0 is experimental — expect inaccuracies and bugs</h4>
+        <p>BPM and key detection are based on 30-second previews and may not be accurate for all tracks. Mix Matches results are generated algorithmically and are not always harmonically perfect. If something breaks or feels wrong, please report it — your feedback directly shapes the next version.</p>
       </div>
     </div>
 
@@ -307,10 +495,18 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>Made with ♥ by <span>Yael Amitay</span> &nbsp;·&nbsp; AudioLens v1.0 &nbsp;·&nbsp; © 2026</p>
+  <p>Made with ♥ by <span>Yael Amitay</span> &nbsp;·&nbsp; AudioLens v2.0 &nbsp;·&nbsp; © 2026</p>
 </footer>
 
 <script>
+  function closePopup() {
+    document.getElementById('popup').classList.add('hidden');
+  }
+
+  document.getElementById('popup').addEventListener('click', function(e) {
+    if (e.target === this) closePopup();
+  });
+
   const icon = document.querySelector('.hero-icon');
   window.addEventListener('scroll', () => {
     const scale = 1 + window.scrollY * 0.0012;
