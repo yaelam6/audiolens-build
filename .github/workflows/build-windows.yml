@@ -23,7 +23,7 @@ jobs:
         run: python create_icon_win.py
 
       - name: Build with PyInstaller
-        run: python -m PyInstaller AudioLens-Windows-v2.spec
+        run: python -m PyInstaller AudioLens-Windows.spec
 
       - name: Package as zip
         shell: pwsh
