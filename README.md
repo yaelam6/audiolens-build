@@ -1,10 +1,10 @@
-# ⊙ AudioLens
+# ⊙ AudioLens v2.0
 
 **A desktop application for BPM and musical key analysis, built for DJs and music producers.**
 
 🌐 **Live website:** [audiolens.netlify.app](https://audiolens.netlify.app)
 
-![AudioLens screenshot](screenshot.png)
+![AudioLens v2.0 screenshot](screenshot.png)
 
 > ⚠️ **This is v2.0 — an experimental release.** BPM and key detection may be inaccurate on some tracks. Mix Matches results are algorithmic and not always harmonically perfect. Expect bugs. Feedback is very welcome.
 
